@@ -92,6 +92,16 @@ namespace API.Controllers
             };
         }
 
+        [Authorize]
+        [HttpGet("savedAddress")]
+        public async Task<ActionResult<UserAddress>> GetSavedAddress()
+        {
+            return await _userManager.Users
+                .Where(x => x.UserName == User.Identity.Name)
+                .Select(user => user.Address)
+                .FirstOrDefaultAsync();
+        }
+
         private async Task<Basket> RetrieveBasket(string buyerId)
         {
             // If the buyer id is null/empty, will will remove th cookie from the response
